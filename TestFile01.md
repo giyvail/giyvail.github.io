@@ -19,7 +19,7 @@ body {
   position: absolute;
   top: 0px;
   left: 0px;
-  animation: move 2s linear infinite;
+  animation: move 10s linear infinite;
 }
 
 @keyframes move {
@@ -39,7 +39,7 @@ body {
 <script>
 var balloons = [];
 
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 100; i++) {
   balloons.push({
     x: Math.random() * window.innerWidth,
     y: 0,
@@ -85,3 +85,4 @@ for (var i = 0; i < balloons.length; i++) {
 </script>
 </body>
 </html>
+
