@@ -12,6 +12,7 @@ html
   height: 1000px;
   border: 1px solid black;
   overflow: hidden;
+  background-image: linear-gradient(to bottom, #b3e5fc, #03a9f4);
 }
 .balloon {
   position: absolute;
@@ -60,7 +61,6 @@ html
   justify-content: center;
   align-items: center;
 }
- /* New animation style */
 @keyframes rotate {
   0% {
     transform: rotate(0deg);
@@ -69,11 +69,7 @@ html
     transform: rotate(360deg);
   }
 }
- /* New balloon style */
-.balloon {
-  animation: bumb 0.2s infinite alternate, rotate 2s infinite linear;
-}
- </style>
+</style>
 </head>
 <body>
 <div id="game-container"></div>
@@ -100,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     balloon.style.top = '1000px';
     balloon.style.left = `${getRandomPosition()}px`;
     balloon.style.backgroundColor = getRandomColor();
+    balloon.style.animationDuration = `${getRandomDuration()}s`;
     balloon.addEventListener('mouseover', () => {
       balloon.style.display = 'none';
       score++;
@@ -117,29 +114,37 @@ document.addEventListener('DOMContentLoaded', () => {
           balloon.style.top = `${currentTop - getRandomSpeed()}px`;
         }
       }, 20);
-      }
-       function getRandomPosition() {
-        return Math.floor(Math.random() * (gameContainer.offsetWidth - 80));
-      }
-       function getRandomSpeed() {
-        return Math.floor(Math.random() * 10) + 1;
-      }
-       function getRandomColor() {
-        return colors[Math.floor(Math.random() * colors.length)];
-      }
-       function updateScore() {
-        scoreContainer.textContent = score;
-      }
-       setInterval(createBalloon, 1000);
-       function playPopSound() {
-        const sound = new Audio('https://example.com/pop.wav'); // Replace with your sound resource URL
-        sound.play();
-      }
-       document.addEventListener('mouseover', (event) => {
-        if (event.target.classList.contains('balloon')) {
-          playPopSound();
-        }
-      });
+  }
+  function getRandomPosition() {
+    return Math.floor(Math.random() * (gameContainer.offsetWidth - 80));
+  }
+  function getRandomSpeed() {
+    return Math.floor(Math.random() * 10) + 1;
+  }
+  function getRandomColor() {
+    const gradient = `radial-gradient(circle, ${getRandomGradientColor()}, ${getRandomGradientColor()})`;
+    return gradient;
+  }
+  function getRandomGradientColor() {
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+  function getRandomDuration() {
+    return Math.floor(Math.random() * 5) + 1;
+  }
+  function updateScore() {
+    scoreContainer.textContent = score;
+  }
+  setInterval(createBalloon, 1000);
+  function playPopSound() {
+    const sound = new Audio('https://example.com/pop.wav'); // Replace with your sound resource URL
+    sound.play();
+  }
+  document.addEventListener('mouseover', (event) => {
+    if (event.target.classList.contains('balloon')) {
+      event.target.style.animation = 'bumb 0.2s infinite alternate';
+      playPopSound();
+    }
+  });
 });
 </script>
 </body>
