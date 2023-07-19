@@ -5,84 +5,84 @@ permalink: /TestFile01
 <!DOCTYPE html>
 <html>
 <head>
-<title>Balloon Game</title>
-<style>
-body {
-  background-color: #ffffff;
-}
+  <title>Balloon Game</title>
+  <style>
+    #game-container {
+      position: relative;
+      width: 400px;
+      height: 500px;
+      border: 1px solid black;
+      overflow: hidden;
+    }
 
-.balloon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: red;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  animation: move 10s linear infinite;
-}
+    .balloon {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
 
-@keyframes move {
-  0% {
-    top: 0px;
-    left: 0px;
-  }
-  100% {
-    top: 100vh;
-    left: 100vw;
-  }
-}
-
-</style>
+    .red { background-color: red; }
+    .blue { background-color: blue; }
+    .green { background-color: green; }
+  </style>
 </head>
 <body>
-<script>
-var balloons = [];
+  <div id="game-container"></div>
 
-for (var i = 0; i < 100; i++) {
-  balloons.push({
-    x: Math.random() * window.innerWidth,
-    y: 0,
-    width: 50,
-    height: 50,
-    color: Math.floor(Math.random() * 100) + 1
-  });
-}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const gameContainer = document.getElementById('game-container');
+      let score = 0;
 
-var mouseX = 0;
-var mouseY = 0;
+      function createBalloon() {
+        const balloon = document.createElement('div');
+        balloon.className = `balloon ${getRandomColor()}`;
+        balloon.style.top = '500px';
+        balloon.style.left = `${getRandomPosition()}px`;
 
-window.addEventListener('mousemove', function(event) {
-  mouseX = event.clientX;
-  mouseY = event.clientY;
-});
+        balloon.addEventListener('mouseover', () => {
+          balloon.style.display = 'none';
+          score++;
+          updateScore();
+        });
 
-function update() {
-  for (var i = 0; i < balloons.length; i++) {
-    balloons[i].y += 5;
+        gameContainer.appendChild(balloon);
 
-    if (balloons[i].y > window.innerHeight) {
-      balloons[i].y = 0;
-    }
+        const flyInterval = setInterval(() => {
+          const currentTop = parseInt(balloon.style.top);
+          if (currentTop <= 0) {
+            clearInterval(flyInterval);
+            balloon.remove();
+            updateScore();
+          } else {
+            balloon.style.top = `${currentTop - getRandomSpeed()}px`;
+          }
+        }, 20);
+      }
 
-    if (balloons[i].x > mouseX - balloons[i].width / 2 && balloons[i].x < mouseX + balloons[i].width / 2 &&
-      balloons[i].y > mouseY - balloons[i].height / 2 && balloons[i].y < mouseY + balloons[i].height / 2) {
-      balloons[i].color = Math.floor(Math.random() * 100) + 1;
-    }
-  }
-}
+      function getRandomColor() {
+        const colors = ['red', 'blue', 'green'];
+        return colors[Math.floor(Math.random() * colors.length)];
+      }
 
-setInterval(update, 20);
+      function getRandomPosition() {
+        return Math.floor(Math.random() * (gameContainer.offsetWidth - 40));
+      }
 
-for (var i = 0; i < balloons.length; i++) {
-  var balloon = document.createElement('div');
-  balloon.className = 'balloon';
-  balloon.style.width = balloons[i].width + 'px';
-  balloon.style.height = balloons[i].height + 'px';
-  balloon.style.background = 'rgb(' + balloons[i].color + ', 0, 0)';
-  document.body.appendChild(balloon);
-}
-</script>
+      function getRandomSpeed() {
+        return Math.floor(Math.random() * 5) + 1;
+      }
+
+      function updateScore() {
+        document.getElementById('score').textContent = `Score: ${score}`;
+      }
+
+      setInterval(createBalloon, 1000);
+    });
+  </script>
 </body>
 </html>
+
 
