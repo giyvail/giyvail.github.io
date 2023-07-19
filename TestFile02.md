@@ -9,9 +9,9 @@ permalink: /TestFile02
   <style>
     #game-container {
       position: relative;
-      width: 2560px;
-      height: 1440px;
-      border: 1px solid black;
+      width: 1000px;
+      height: 1000px;
+      border: 3px solid black;
       overflow: hidden;
     }
 
@@ -19,8 +19,7 @@ permalink: /TestFile02
       position: absolute;
       width: 100px;
       height: 160px;
-      background-image: url('balloon-texture.png');
-      background-size: cover;
+      background: radial-gradient(circle, #FFB3BA, #FF7171);
       cursor: pointer;
       animation: bumb 0.2s infinite alternate;
     }
@@ -83,5 +82,6 @@ permalink: /TestFile02
   </script>
 </body>
 </html>
+
 
 
